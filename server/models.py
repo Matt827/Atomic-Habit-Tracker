@@ -70,7 +70,7 @@ class User(db.Model, SerializerMixin):
 
     # table columns
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    username = db.Column(db.String, unique=True, nullable=False)
 
     # table relationships
     entries = db.relationship("entries", backref="user", cascade="all, delete")
@@ -93,9 +93,9 @@ class HabitEntry(db.Model, SerializerMix):
 
     # table relationships/columns
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    dailyHabit_id = db.Column(db.Integer, db.ForeignKey("dailyHabit.id"))
-    weeklyHabit_id = db.Column(db.Integer, db.ForeignKey("weeklyHabit.id"))
-    monthlyHabit_id = db.Column(db.Integer, db.ForeignKey("monthlyHabit.id"))
+    dailyHabit_id = db.Column(db.Integer, db.ForeignKey("daily_habit.id"))
+    weeklyHabit_id = db.Column(db.Integer, db.ForeignKey("weekly_habit.id"))
+    monthlyHabit_id = db.Column(db.Integer, db.ForeignKey("monthly_habit.id"))
 
     # serilaize rules
     serialize_rules = ("-daily_habit.entries, -weekly_habit.entries, -monthly_habit.entries, -user.entries")

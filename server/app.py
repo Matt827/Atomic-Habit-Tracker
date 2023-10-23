@@ -11,7 +11,7 @@ from flask_restful import Resource
 from config import app, db, api
 
 # Add Models here
-from model import User, Entry, DailyHabit, WeeklyHabit, MonthlyHabit
+from model import User, HabitEntry, DailyHabit, WeeklyHabit, MonthlyHabit
 
 @app.route('/')
 def index():
@@ -76,7 +76,7 @@ class Users(Resource):
     def post(self):
         try:
             user = {
-                name = request.json["name"]
+                username = request.json["username"]
             }
             db.session.add(user)
             db.session.commit()
