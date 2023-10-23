@@ -9,6 +9,7 @@ from faker import Faker
 # Local imports
 from app import app
 from models import db
+from models import DailyHabit, User, HabitEntry
 
 if __name__ == '__main__':
     fake = Faker()
