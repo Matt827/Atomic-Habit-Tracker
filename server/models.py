@@ -85,7 +85,7 @@ class User(db.Model, SerializerMixin):
             return name
         raise ValueError("Error, must have name greater than zero.")
 
-class Entry(db.Model, SerializerMix):
+class HabitEntry(db.Model, SerializerMix):
     __tablename__ = "entries"
 
     # table columns
