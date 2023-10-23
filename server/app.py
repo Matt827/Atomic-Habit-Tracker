@@ -3,17 +3,19 @@
 # Standard library imports
 
 # Remote library imports
-from flask import request
+from flask import request, make_response, abort, session, jsonify
+
 from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
-from models import db, Workout, WorkoutPost, User
-from flask_restful import Api, Resource
-from flask_migrate import Migrate
-from flask import Flask, make_response, jsonify, request, session
-import os
 
+# Add Models here
+from model import User, Entry, DailyHabit, WeeklyHabit, MonthlyHabit
+
+
+
+api = Api(app)
 
 @app.route('/')
 def index():
