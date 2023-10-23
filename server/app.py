@@ -13,8 +13,6 @@ from config import app, db, api
 # Add Models here
 from model import User, Entry, DailyHabit, WeeklyHabit, MonthlyHabit
 
-api = Api(app)
-
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
