@@ -9,7 +9,7 @@ from faker import Faker
 # Local imports
 from app import app
 from models import db
-from model import User, HabitEntry, DailyHabit, WeeklyHabit, MonthlyHabit
+from models import User, HabitEntry, DailyHabit, WeeklyHabit, MonthlyHabit
 
 fake = Faker()
 
@@ -36,9 +36,8 @@ def create_users():
 def create_entries(users, habits):
     entries = []
 
-    for _ in range(20):
+    for _ in range(5):
         e = HabitEntry(
-            name = fake.name(),
             dailyHabit_id = rc(habits).id,
             user_id = rc(users).id
         )
@@ -58,7 +57,7 @@ if __name__ == '__main__':
 
         print("seeding DailyHabits...")
         habits = create_habits()
-        db.session.add(habits)
+        db.session.add_all(habits)
         db.session.commit()
 
         print("seeding users...")
@@ -68,7 +67,7 @@ if __name__ == '__main__':
 
         print("seeding HabitEntries...")
         entries = create_entries(users, habits)
-        db.sesison.add_all(entries)
+        db.session.add_all(entries)
         db.session.commit()
 
         print("Done seeding!")
