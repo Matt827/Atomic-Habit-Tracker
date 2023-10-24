@@ -9,7 +9,7 @@ from faker import Faker
 # Local imports
 from app import app
 from models import db
-from models import User, HabitEntry, DailyHabit, WeeklyHabit, MonthlyHabit
+from models import User, HabitEntry, DailyHabit
 
 fake = Faker()
 
@@ -52,8 +52,6 @@ if __name__ == '__main__':
         User.query.delete()
         HabitEntry.query.delete()
         DailyHabit.query.delete()
-        WeeklyHabit.query.delete()
-        MonthlyHabit.query.delete()
 
         print("seeding DailyHabits...")
         habits = create_habits()

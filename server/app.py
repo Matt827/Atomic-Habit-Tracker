@@ -10,7 +10,7 @@ from flask_restful import Resource
 from config import app, db, api
 
 # Add Models here
-from models import User, HabitEntry, DailyHabit, WeeklyHabit, MonthlyHabit
+from models import User, HabitEntry, DailyHabit
 
 @app.route('/')
 def index():
@@ -162,6 +162,56 @@ class HabitEntriesById(Resource):
             return make_response({"error": ["validation error"]}, 400)
 
 api.add_resource(HabitEntriesById, "/habit_entries/<int:id>")
+
+# class Signup(Resource):
+#     def post(self):
+#         try:
+#             new_user = User(
+#                 username = request.json['username'],
+#                 password_hash = request.json['password'],
+#                 age = request.json['age'],
+#                 image_url = fake.image_url()
+#             )
+#             db.session.add(new_user)
+#             db.session.commit()
+#             session['user_id'] = new_user.id
+#             return make_response(new_user.to_dict(rules=('-_password_hash',)), 201)
+#         except ValueError:
+#             return make_response({"error": "User not created"}, 400)
+
+# api.add_resource(Signup, '/signup')
+
+# class Login(Resource):
+#     def post(self):
+#         user = User.query.filter(User.username == request.json['username']).first()
+#         password = request.json['password']
+#         if user and user.authenticate(password):
+#             session['user_id'] = user.id
+#             return make_response(user.to_dict(rules=('-_password_hash',)), 201)
+#         else:
+#             return make_response('error', 400)
+
+# api.add_resource(Login, '/login')
+
+# class Logout(Resource):
+#     def delete(self):
+#         session['user_id'] = None
+#         return make_response({}, 204)
+
+# api.add_resource(Logout, '/logout')
+
+# class AutoLogin(Resource):
+#     def get(self):
+#         if session['user_id']:
+#             user = User.query.filter(User.id == session['user_id']).first()
+#             if user:
+#                 return make_response(user.to_dict(rules=('-_password_hash',)), 200)
+#             else:
+#                 return make_response({"errors": "User not found"}, 404)
+#         else:
+#             return make_response('', 204)
+
+# api.add_resource(AutoLogin, '/auto_login')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
