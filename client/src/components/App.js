@@ -1,8 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+
+import Main from "./Main";
+import Signup from "./Signup";
+import Login from "./Login";
 
 function App() {
-  return <h1>Project Client</h1>;
+  return (
+    <div className="app">
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Main 
+          
+          />
+        </Route> 
+        <Route exact path="/login">
+          <Login
+          
+          />
+        </Route>
+        <Route exact path="/signup">
+          <Signup
+          
+          />
+          </Route>
+      </Switch>
+    </Router>
+</div>
+  )
 }
 
 export default App;
