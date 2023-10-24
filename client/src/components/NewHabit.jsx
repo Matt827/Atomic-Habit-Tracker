@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom"
 import Habit from "./Habit"
 import Header from './Header';
 
@@ -16,6 +17,11 @@ function NewHabit({habits, handleAddHabit}) {
             <Header />
             <h1>New Habit</h1>
             {displayHabits}
+            <button>
+                <Link className="custom-habit-button" to="/custom_habit">
+                    edit new habit
+                </Link>
+            </button>
         </div>
     )
 }

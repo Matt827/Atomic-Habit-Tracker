@@ -5,6 +5,7 @@ import Main from "./Main";
 import Signup from "./Signup";
 import Login from "./Login";
 import NewHabit from "./NewHabit";
+import CustomHabit from "./CustomHabit";
 
 function App() {
   const [habits, setHabits] = useState([])
@@ -33,6 +34,11 @@ function App() {
           <NewHabit 
             habits={habits}
             handleAddHabit={handleAddHabit}
+
+          />
+        </Route>
+        <Route exact path="/custom_habit">
+          <CustomHabit 
 
           />
         </Route> 
