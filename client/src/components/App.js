@@ -6,13 +6,14 @@ import Signup from "./Signup";
 import Login from "./Login";
 
 function App() {
+
   return (
     <div className="app">
     <Router>
       <Switch>
         <Route exact path="/">
           <Main 
-          
+
           />
         </Route> 
         <Route exact path="/login">
