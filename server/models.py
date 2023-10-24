@@ -27,46 +27,6 @@ class DailyHabit(db.Model, SerializerMixin):
             return name
         raise ValueError("Error, must have name greater than zero.")
 
-class WeeklyHabit(db.Model, SerializerMixin):
-    __tablename__ = "weekly_habits"
-
-    # table columns
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-
-    # table relationships
-    entries = db.relationship("HabitEntry", backref="weekly_habit", cascade="all, delete")
-
-    # serilaize rules
-    serialize_rules = ("-entries.weekly_habit", )
-
-    # validation rules
-    @validates("name")
-    def validate_name(self, key, name):
-        if name and len(name) > 0:
-            return name
-        raise ValueError("Error, must have name greater than zero.")
-
-class MonthlyHabit(db.Model, SerializerMixin):
-    __tablename__ = "monthly_habits"
-
-    # table columns
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-
-    # table relationships
-    entries = db.relationship("HabitEntry", backref="monthly_habit", cascade="all, delete")
-
-    # serilaize rules
-    serialize_rules = ("-entries.monthly_habit", )
-
-    # validation rules
-    @validates("name")
-    def validate_name(self, key, name):
-        if name and len(name) > 0:
-            return name
-        raise ValueError("Error, must have name greater than zero.")
-
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -96,8 +56,6 @@ class HabitEntry(db.Model, SerializerMixin):
     # table relationships/columns
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     dailyHabit_id = db.Column(db.Integer, db.ForeignKey("daily_habits.id"))
-    weeklyHabit_id = db.Column(db.Integer, db.ForeignKey("weekly_habits.id"))
-    monthlyHabit_id = db.Column(db.Integer, db.ForeignKey("monthly_habits.id"))
 
     # serilaize rules
     serialize_rules = ("-user.entries", )
