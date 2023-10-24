@@ -23,3 +23,10 @@ Habit has many users through entries,
 Entry belongs to a User and a Habit
 
 Validations:
+User must have username
+Habit must have name
+Entry must have a user and habit
+
+Api Routes:
+
+Frontend React Components:
