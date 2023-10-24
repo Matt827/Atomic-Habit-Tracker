@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom"
+
 import Header from './Header';
 import HabitList from './HabitList';
+import NewHabit from './NewHabit';
 
-function Main() {
-    const [habits, setHabits] = useState([])
-
-    useEffect(() => {
-      fetch("http://127.0.0.1:5555/daily_habits")
-      .then(res => res.json())
-      .then(habits => setHabits(habits))
-    }, [])
+function Main({habits}) {
 
     return (
         <div className='main-container'>
@@ -18,6 +14,11 @@ function Main() {
             <HabitList 
                 habits={habits}
             />
+            <button>
+                <Link className="new-habit-button" to="/new_habit">
+                    Add new habit
+                </Link>
+            </button>
         </div>
     )
 }
