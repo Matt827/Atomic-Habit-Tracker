@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-function Habit({name}) {
-
+function Habit({name, handleAddHabit}) {
 
     return (
-        <div className='habit-container'>
+        <div className='habit-container' onClick={handleAddHabit}>
             <h3>{name}</h3>
         </div>
     )

@@ -7,18 +7,34 @@ from config import db
 
 # Models go here!
 
-class DailyHabit(db.Model, SerializerMixin):
-    __tablename__ = "daily_habits"
+# Association table to store many-to-many relationship between users and habits
+class Entry(db.Model, SerializerMixin):
+    __tablename__ = "entries"
+
+    # table columns
+    id = db.Column(db.Integer, primary_key=True)
+
+    # table relationships/columns
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    habit_id = db.Column(db.Integer, db.ForeignKey("habits.id"))
+
+    # serilaize rules
+    serialize_rules = ("-user.entries", )
+
+    # validation rules
+class Habit(db.Model, SerializerMixin):
+    __tablename__ = "habits"
 
     # table columns
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     # table relationships
-    entries = db.relationship("HabitEntry", backref="daily_habit", cascade="all, delete")
+    entries = db.relationship(
+        "Entry", backref="habit", cascade="all, delete")
 
     # serilaize rules
-    serialize_rules = ("-entries.daily_habit", )
+    serialize_rules = ("-entries.habit", )
 
     # validation rules
     @validates("name")
@@ -35,7 +51,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique=True, nullable=False)
 
     # table relationships
-    entries = db.relationship("HabitEntry", backref="user", cascade="all, delete")
+    entries = db.relationship("Entry", backref="user", cascade="all, delete")
 
     # serilaize rules
     serialize_rules = ("-entries.user", )
@@ -47,17 +63,3 @@ class User(db.Model, SerializerMixin):
             return username
         raise ValueError("Error, must have username greater than zero.")
 
-class HabitEntry(db.Model, SerializerMixin):
-    __tablename__ = "entries"
-
-    # table columns
-    id = db.Column(db.Integer, primary_key=True)
-
-    # table relationships/columns
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    dailyHabit_id = db.Column(db.Integer, db.ForeignKey("daily_habits.id"))
-
-    # serilaize rules
-    serialize_rules = ("-user.entries", )
-
-    # validation rules
