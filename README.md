@@ -1,4 +1,4 @@
-<h2>Atomic Habit Tracker</h2>
+h2>Atomic Habit Tracker</h2>
 
 <h3>Description:</h3>
 

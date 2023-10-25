@@ -10,7 +10,7 @@ from flask_restful import Resource
 from config import app, db, api
 
 # Add Models here
-from models import User, Entry, Habit
+from models import User, HabitEntry, Habit
 
 @app.route('/')
 def index():
@@ -113,14 +113,14 @@ class UsersById(Resource):
 
 api.add_resource(UsersById, "/users/<int:id>")
 
-class Entries(Resource):
+class HabitEntries(Resource):
     def get(self):
-        entry = [entry.to_dict() for entry in Entry.query.all()]
+        entry = [entry.to_dict() for entry in HabitEntry.query.all()]
         return make_response(entry, 200)
 
     def post(self):
         try:
-            entry = Entry(
+            entry = HabitEntry(
                 user_id = request.json["user_id"],
                 dailyHabit_id = request.json["dailyHabit_id"],
                 weeklyHabit_id = request.json["weeklyHabit_id"],
@@ -132,17 +132,17 @@ class Entries(Resource):
         except:
             return make_response({"error": ["validation error"]}, 400)
 
-api.add_resource(Entries, "/entries")
+api.add_resource(HabitEntries, "/entries")
 
-class EntriesById(Resource):
+class HabitEntriesById(Resource):
     def get(self, id):
-        entry = Entry.query.filter_by(id = id).first()
+        entry = HabitEntry.query.filter_by(id = id).first()
         if not entry:
             return make_response({"error": ["entry not found"]}, 404)
         return make_response(entry.to_dict(), 200)
 
     def delete(self, id):
-        entry = Entry.query.filter_by(id = id).first()
+        entry = HabitEntry.query.filter_by(id = id).first()
         if not entry:
             return make_response({"error": ["entry not found"]}, 404)
         db.session.delete(entry)
@@ -150,7 +150,7 @@ class EntriesById(Resource):
         return make_response({}, 204)
 
     def patch(self, id):
-        entry = Entry.query.filter(Entry.id == id).first()
+        entry = HabitEntry.query.filter(Entry.id == id).first()
         if not entry:
             return make_response({"error": ["entry not found"]}, 404)
         try:
@@ -162,7 +162,7 @@ class EntriesById(Resource):
         except:
             return make_response({"error": ["validation error"]}, 400)
 
-api.add_resource(EntriesById, "/entries/<int:id>")
+api.add_resource(HabitEntriesById, "/entries/<int:id>")
 
 # class Signup(Resource):
 #     def post(self):
