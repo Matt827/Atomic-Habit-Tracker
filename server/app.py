@@ -24,7 +24,8 @@ class Habits(Resource):
     def post(self):
         try:
             habit = Habit(
-                name = request.json["name"]
+                name = request.json["name"],
+                added = request.json["added"]
             )
             db.session.add(habit)
             db.session.commit()
