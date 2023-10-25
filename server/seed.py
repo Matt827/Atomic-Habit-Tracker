@@ -9,67 +9,59 @@ from faker import Faker
 # Local imports
 from app import app
 from models import db
-from models import User, HabitEntry, DailyHabit
+from models import User, Entry, Habit
 
 fake = Faker()
 
-# def create_habits():
-#     habits = []
-#     for _ in range(20):
-#         h = DailyHabit(
-#             name = fake.name(),
-#         )
-#         habits.append(h)
-#     return habits
 def create_habits():
     habits = []
 
     # Body
-    h1 = DailyHabit(name = "Walk")
+    h1 = Habit(name = "Walk")
     habits.append(h1)
-    h2 = DailyHabit(name = "Run")
+    h2 = Habit(name = "Run")
     habits.append(h2)
-    h3 = DailyHabit(name = "Strech")
+    h3 = Habit(name = "Strech")
     habits.append(h3)
-    h4 = DailyHabit(name = "Exercise")
+    h4 = Habit(name = "Exercise")
     habits.append(h4)
-    h5 = DailyHabit(name = "Stand")
+    h5 = Habit(name = "Stand")
     habits.append(h5)
 
     # Mind
-    h6 = DailyHabit(name = "Meditation")
+    h6 = Habit(name = "Meditation")
     habits.append(h6)
-    h7 = DailyHabit(name = "Read a book")
+    h7 = Habit(name = "Read a book")
     habits.append(h7)
-    h8 = DailyHabit(name = "Study")
+    h8 = Habit(name = "Study")
     habits.append(h8)
-    h9 = DailyHabit(name = "Breathe")
+    h9 = Habit(name = "Breathe")
     habits.append(h9)
-    h10 = DailyHabit(name = "Review Today")
+    h10 = Habit(name = "Review Today")
     habits.append(h10)
 
     # Health
-    h11 = DailyHabit(name = "Drink Water")
+    h11 = Habit(name = "Drink Water")
     habits.append(h11)
-    h12 = DailyHabit(name = "Eat Breakfast")
+    h12 = Habit(name = "Eat Breakfast")
     habits.append(h12)
-    h13 = DailyHabit(name = "Eat Vegtables")
+    h13 = Habit(name = "Eat Vegtables")
     habits.append(h13)
-    h14 = DailyHabit(name = "Sleep Early")
+    h14 = Habit(name = "Sleep Early")
     habits.append(h14)
-    h15 = DailyHabit(name = "No Sweets")
+    h15 = Habit(name = "No Sweets")
     habits.append(h15)
 
     # Lifestyle
-    h16 = DailyHabit(name = "Call Parents")
+    h16 = Habit(name = "Call Parents")
     habits.append(h16)
-    h17 = DailyHabit(name = "Contact a Friend")
+    h17 = Habit(name = "Contact a Friend")
     habits.append(h17)
-    h18 = DailyHabit(name = "Save Money")
+    h18 = Habit(name = "Save Money")
     habits.append(h18)
-    h19 = DailyHabit(name = "Track Expenses")
+    h19 = Habit(name = "Track Expenses")
     habits.append(h19)
-    h20 = DailyHabit(name = "Journal")
+    h20 = Habit(name = "Journal")
     habits.append(h20)
 
     return habits
@@ -88,8 +80,8 @@ def create_entries(users, habits):
     entries = []
 
     for _ in range(5):
-        e = HabitEntry(
-            dailyHabit_id = rc(habits).id,
+        e = Entry(
+            habit_id = rc(habits).id,
             user_id = rc(users).id
         )
         entries.append(e)
@@ -100,21 +92,22 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
         # Seed code goes here!
-        User.query.delete()
-        HabitEntry.query.delete()
-        DailyHabit.query.delete()
 
-        print("seeding DailyHabits...")
+        User.query.delete()
+        Entry.query.delete()
+        Habit.query.delete()
+
+        print("seeding Habits...")
         habits = create_habits()
         db.session.add_all(habits)
         db.session.commit()
 
-        print("seeding users...")
+        print("seeding Users...")
         users = create_users()
         db.session.add_all(users)
         db.session.commit()
 
-        print("seeding HabitEntries...")
+        print("seeding Entries...")
         entries = create_entries(users, habits)
         db.session.add_all(entries)
         db.session.commit()
