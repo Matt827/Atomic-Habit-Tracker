@@ -19,7 +19,7 @@ function NewHabit({habits, handleAddHabit}) {
             {displayHabits}
             <button>
                 <Link className="custom-habit-button" to="/custom_habit">
-                    edit new habit
+                    Custom Habit
                 </Link>
             </button>
         </div>
