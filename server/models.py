@@ -13,8 +13,6 @@ class Entry(db.Model, SerializerMixin):
 
     # table columns
     id = db.Column(db.Integer, primary_key=True)
-
-    # table relationships/columns
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     habit_id = db.Column(db.Integer, db.ForeignKey("habits.id"))
 
@@ -28,8 +26,13 @@ class Habit(db.Model, SerializerMixin):
     # table columns
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    added = db.Column(db.Boolean)
 
-    # table relationships
+    # Relationship mapping the habit to related users
+    users = db.relationship(
+        'User', secondary="entries", back_populates='habits')
+
+    # Relationship mapping the habit to related entries
     entries = db.relationship(
         "Entry", backref="habit", cascade="all, delete")
 
@@ -50,8 +53,13 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
 
-    # table relationships
-    entries = db.relationship("Entry", backref="user", cascade="all, delete")
+    # Relationship mapping the user to related habits
+    habits = db.relationship(
+        'Habit', secondary="entries", back_populates='users')
+
+    # Relationship mapping the user to related entries
+    entries = db.relationship(
+        "Entry", backref="user", cascade="all, delete")
 
     # serilaize rules
     serialize_rules = ("-entries.user", )
