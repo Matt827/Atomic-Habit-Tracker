@@ -2,8 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
-from config import db
+from config import db, bcrypt
 
 class HabitEntry(db.Model, SerializerMixin):
     __tablename__ = "habit_entries"
@@ -51,6 +52,8 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     age = db.Column(db.Integer)
+    _password_hash = db.Column(db.String)
+    image_url = db.Column(db.String)
 
     habits = db.relationship(
         'Habit', secondary="habit_entries", back_populates='users')
@@ -60,12 +63,23 @@ class User(db.Model, SerializerMixin):
 
     serialize_rules = ("-habit_entries.users","habits.users",)
 
-
     @validates("username")
     def validate_name(self, key, username):
         if username and len(username) > 0:
             return username
         raise ValueError("Error, must have username greater than zero.")
+
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, password):
+        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
 
     def __repr__(self):
         return f"<User {self.username}>"
