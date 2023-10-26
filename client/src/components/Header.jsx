@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom"
 
-function Header() {
+function Header({ onLogout }) {
+    function handleLogout() {
+        fetch("/logout", {
+            method: "DELETE",
+          }).then(() => onLogout());
+    }
+
     return (
         <div className='header-container'>
             <h1>Header</h1>
@@ -14,6 +20,7 @@ function Header() {
             <Link className="signup-button" to="/signup">
                 Signup
             </Link>
+            <button onClick={handleLogout}>Logout</button>
         </div>
     )
 }

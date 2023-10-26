@@ -17,7 +17,7 @@ class HabitEntry(db.Model, SerializerMixin):
     habit_id = db.Column(db.Integer, db.ForeignKey("habits.id"))
 
     # serilaize rules
-    serialize_rules = ("-user.habit_entries", "-habit.habit_entries", )
+    serialize_rules = ("-user.habit_entries", "-habit.habit_entries",)
 
     # validation rules
 class Habit(db.Model, SerializerMixin):
@@ -41,7 +41,7 @@ class Habit(db.Model, SerializerMixin):
         "HabitEntry", backref="habit", cascade="all, delete")
 
     # serilaize rules
-    serialize_rules = ("-habit_entries.habit", )
+    serialize_rules = ("-habit_entries.habit",)
 
     # validation rules
     @validates("name")
@@ -67,7 +67,7 @@ class User(db.Model, SerializerMixin):
         "HabitEntry", backref="user", cascade="all, delete")
 
     # serilaize rules
-    serialize_rules = ("-habit_entries.user", )
+    serialize_rules = ("-habit_entries.user",)
 
     # validation rules
     @validates("username")
@@ -89,7 +89,7 @@ class EntryDate(db.Model, SerializerMixin):
         "HabitEntry", backref="entry_date", cascade="all, delete")
 
     # serilaize rules
-    serialize_rules = ("-habit_entries.entry_dates", )
+    serialize_rules = ("-habit_entries.entry_date",)
 
     # validation rules
     @validates("entry_performed_date")

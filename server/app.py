@@ -10,7 +10,7 @@ from flask_restful import Resource
 from config import app, db, api
 
 # Add Models here
-from models import User, HabitEntry, Habit
+from models import HabitEntry, EntryDate, User, Habit
 
 @app.route('/')
 def index():
@@ -18,14 +18,18 @@ def index():
 
 class Habits(Resource):
     def get(self):
-        habits = [habit.to_dict(rules=("-entries",)) for habit in Habit.query.all()]
+        habits = [habit.to_dict(rules=("-habit_entries",)) for habit in Habit.query.all()]
         return make_response(habits, 200)
 
     def post(self):
         try:
             habit = Habit(
                 name = request.json["name"],
-                added = request.json["added"]
+                duration = request.json["duration"],
+                daily = request.json["daily"],
+                weekly = request.json["weekly"],
+                monthly = request.json["monthly"],
+                yearly = request.json["yearly"]
             )
             db.session.add(habit)
             db.session.commit()
@@ -40,7 +44,7 @@ class HabitsById(Resource):
         habit = Habit.query.filter_by(id = id).first()
         if not habit: 
             return make_response({"error": ["habit not found"]}, 404)
-        return make_response(habit.to_dict(rules = ("-entries",)), 200)
+        return make_response(habit.to_dict(rules = ("-habit_entries",)), 200)
 
     def delete(self, id):
         habit = Habit.query.filter_by(id = id).first()
@@ -67,13 +71,14 @@ api.add_resource(HabitsById, "/habits/<int:id>")
 
 class Users(Resource):
     def get(self):
-        users = [user.to_dict(rules = ("-entries",)) for user in User.query.all()]
+        users = [user.to_dict(rules = ("-habit_entries",)) for user in User.query.all()]
         return make_response(users, 200)
 
     def post(self):
         try:
             user = User(
-                username = request.json["username"]
+                username = request.json["username"],
+                age = request.json["age"]
             )
             db.session.add(user)
             db.session.commit()
@@ -122,9 +127,7 @@ class HabitEntries(Resource):
         try:
             entry = HabitEntry(
                 user_id = request.json["user_id"],
-                dailyHabit_id = request.json["dailyHabit_id"],
-                weeklyHabit_id = request.json["weeklyHabit_id"],
-                monthlyHabit_id = request.json["monthlyHabit_id"]
+                habit_id = request.json["habit_id"]
             )
             db.session.add(entry)
             db.session.commit()
@@ -132,7 +135,7 @@ class HabitEntries(Resource):
         except:
             return make_response({"error": ["validation error"]}, 400)
 
-api.add_resource(HabitEntries, "/entries")
+api.add_resource(HabitEntries, "/habit_entries")
 
 class HabitEntriesById(Resource):
     def get(self, id):
@@ -162,7 +165,7 @@ class HabitEntriesById(Resource):
         except:
             return make_response({"error": ["validation error"]}, 400)
 
-api.add_resource(HabitEntriesById, "/entries/<int:id>")
+api.add_resource(HabitEntriesById, "/habit_entries/<int:id>")
 
 # class Signup(Resource):
 #     def post(self):
@@ -182,24 +185,24 @@ api.add_resource(HabitEntriesById, "/entries/<int:id>")
 
 # api.add_resource(Signup, '/signup')
 
-# class Login(Resource):
-#     def post(self):
-#         user = User.query.filter(User.username == request.json['username']).first()
-#         password = request.json['password']
-#         if user and user.authenticate(password):
-#             session['user_id'] = user.id
-#             return make_response(user.to_dict(rules=('-_password_hash',)), 201)
-#         else:
-#             return make_response('error', 400)
+class Login(Resource):
+    def post(self):
+        user = User.query.filter(User.username == request.json['username']).first()
+        password = request.json['password']
+        if user and user.authenticate(password):
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 201)
+        else:
+            return make_response('error', 400)
 
-# api.add_resource(Login, '/login')
+api.add_resource(Login, '/login')
 
-# class Logout(Resource):
-#     def delete(self):
-#         session['user_id'] = None
-#         return make_response({}, 204)
+class Logout(Resource):
+    def delete(self):
+        session['user_id'] = None
+        return make_response({}, 204)
 
-# api.add_resource(Logout, '/logout')
+api.add_resource(Logout, '/logout')
 
 # class AutoLogin(Resource):
 #     def get(self):
@@ -213,6 +216,17 @@ api.add_resource(HabitEntriesById, "/entries/<int:id>")
 #             return make_response('', 204)
 
 # api.add_resource(AutoLogin, '/auto_login')
+
+class CheckSession(Resource):
+
+    def get(self):
+        user = User.query.filter(User.id == session.get('user_id')).first()
+        if user:
+            return user.to_dict()
+        else:
+            return {'message': '401: Not Authorized'}, 401
+
+api.add_resource(CheckSession, '/check_session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
