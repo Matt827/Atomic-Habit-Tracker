@@ -10,9 +10,10 @@ import CustomHabit from "./CustomHabit";
 function App() {
   const [habits, setHabits] = useState([])
   const [entries, setEntries] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/daily_habits")
+    fetch("http://127.0.0.1:5555/habits")
     .then(res => res.json())
     .then(habits => setHabits(habits))
   }, [])
@@ -23,9 +24,35 @@ function App() {
     .then(entries => setEntries(entries))
   }, [])
 
+  useEffect(() => {
+    fetch("http://127.0.0.1:5555/check_session")
+    .then((res) => {
+      if (res.ok) {
+        res.json().then((user) => setUser(user));
+      }
+    })
+  }, [])
+
+  // if (user) {
+  //   return <h2>Welcome, {user.username}!</h2>;
+  // } else {
+  //   return <Login onLogin={setUser} />;
+  // }
+
+
   function handleAddHabit(newhabit) {
     console.log("Adding habit")
       // setHabits([...habits, newhabit])
+  }
+
+  function handleLogin() {
+    // onLogin callback function would handle saving the logged in user's details in state
+    "pass"
+  }
+
+  function handleLogout() {
+    // The handleLogout function would handle removing the information about the user from state
+    "pass"
   }
 
   return (
@@ -36,6 +63,7 @@ function App() {
           <Main 
             // habits={habits}
             entries={entries}
+            onLogout={handleLogout}
             
           />
         </Route>
@@ -53,7 +81,7 @@ function App() {
         </Route> 
         <Route exact path="/login">
           <Login
-          
+            onLogin={handleLogin}
           />
         </Route>
         <Route exact path="/signup">
@@ -63,7 +91,7 @@ function App() {
           </Route>
       </Switch>
     </Router>
-</div>
+  </div>
   )
 }
 

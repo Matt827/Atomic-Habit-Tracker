@@ -5,11 +5,11 @@ import Header from './Header';
 import HabitList from './HabitList';
 import EntryList from './EntryList';
 
-function Main({habits, entries}) {
+function Main({habits, entries, onLogout}) {
 
     return (
         <div className='main-container'>
-            <Header />
+            <Header onLogout={onLogout}/>
             <h1>Main</h1>
             {/* <HabitList  */}
                 {/* habits={habits} */}
