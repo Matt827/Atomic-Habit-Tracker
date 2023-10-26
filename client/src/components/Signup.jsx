@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Header from './Header'
 
 const initialValue ={
@@ -11,7 +11,7 @@ const initialValue ={
 const Signup = ({userToDisplay}) => {
 	const [signupForm, setSignupForm] = useState(initialValue)
 
-    const navigate = useNavigate()
+    const navigate = useHistory()
 
 	function handleSignupChange(e) {
 		const name = e.target.name
@@ -63,3 +63,5 @@ const Signup = ({userToDisplay}) => {
     </>
   )
 }
+
+export default Signup

@@ -71,7 +71,9 @@ def create_users():
     for _ in range(5):
         u = User(
             username = fake.user_name(),
-            age = randint(18, 90)
+            age = randint(18, 90),
+            _password_hash = fake.password(),
+            image_url = fake.image_url()
         )
         users.append(u)
     return users

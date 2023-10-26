@@ -7,7 +7,7 @@ from flask import Flask, request, make_response, abort, session, jsonify
 from flask_restful import Resource
 
 # Local imports
-from config import app, db, api
+from config import app, db, api, bcrypt
 
 # Add Models here
 from models import HabitEntry, EntryDate, User, Habit
@@ -184,6 +184,14 @@ class Signup(Resource):
             return make_response({"error": "User not created"}, 400)
 
 api.add_resource(Signup, '/signup')
+class CheckSession(Resource):
+
+    def get(self):
+        user = User.query.filter(User.id == session.get('user_id')).first()
+        if user:
+            return make_response(user.to_dict(), 200)
+        else:
+            return make_response({'message': '401: Not Authorized'}, 401)
 
 class Login(Resource):
     def post(self):
@@ -193,10 +201,12 @@ class Login(Resource):
             session['user_id'] = user.id
             return make_response(user.to_dict(), 201)
         else:
-            return make_response('error', 400)
+            return make_response({'error': '401 Unauthorized'}, 401)
 
 api.add_resource(Login, '/login')
 
+
+api.add_resource(CheckSession, '/check_session')
 class Logout(Resource):
     def delete(self):
         session['user_id'] = None
@@ -204,29 +214,6 @@ class Logout(Resource):
 
 api.add_resource(Logout, '/logout')
 
-class AutoLogin(Resource):
-    def get(self):
-        if session['user_id']:
-            user = User.query.filter(User.id == session['user_id']).first()
-            if user:
-                return make_response(user.to_dict(rules=('-_password_hash',)), 200)
-            else:
-                return make_response({"errors": "User not found"}, 404)
-        else:
-            return make_response('', 204)
-
-api.add_resource(AutoLogin, '/auto_login')
-
-# class CheckSession(Resource):
-
-#     def get(self):
-#         user = User.query.filter(User.id == session.get('user_id')).first()
-#         if user:
-#             return user.to_dict()
-#         else:
-#             return {'message': '401: Not Authorized'}, 401
-
-# api.add_resource(CheckSession, '/check_session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
