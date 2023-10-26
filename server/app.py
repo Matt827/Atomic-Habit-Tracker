@@ -167,23 +167,23 @@ class HabitEntriesById(Resource):
 
 api.add_resource(HabitEntriesById, "/habit_entries/<int:id>")
 
-# class Signup(Resource):
-#     def post(self):
-#         try:
-#             new_user = User(
-#                 username = request.json['username'],
-#                 password_hash = request.json['password'],
-#                 age = request.json['age'],
-#                 image_url = fake.image_url()
-#             )
-#             db.session.add(new_user)
-#             db.session.commit()
-#             session['user_id'] = new_user.id
-#             return make_response(new_user.to_dict(rules=('-_password_hash',)), 201)
-#         except ValueError:
-#             return make_response({"error": "User not created"}, 400)
+class Signup(Resource):
+    def post(self):
+        try:
+            new_user = User(
+                username = request.json['username'],
+                password_hash = request.json['password'],
+                age = request.json['age'],
+                image_url = fake.image_url()
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+            return make_response(new_user.to_dict(rules=('-_password_hash',)), 201)
+        except ValueError:
+            return make_response({"error": "User not created"}, 400)
 
-# api.add_resource(Signup, '/signup')
+api.add_resource(Signup, '/signup')
 
 class Login(Resource):
     def post(self):
@@ -204,29 +204,29 @@ class Logout(Resource):
 
 api.add_resource(Logout, '/logout')
 
-# class AutoLogin(Resource):
-#     def get(self):
-#         if session['user_id']:
-#             user = User.query.filter(User.id == session['user_id']).first()
-#             if user:
-#                 return make_response(user.to_dict(rules=('-_password_hash',)), 200)
-#             else:
-#                 return make_response({"errors": "User not found"}, 404)
-#         else:
-#             return make_response('', 204)
-
-# api.add_resource(AutoLogin, '/auto_login')
-
-class CheckSession(Resource):
-
+class AutoLogin(Resource):
     def get(self):
-        user = User.query.filter(User.id == session.get('user_id')).first()
-        if user:
-            return user.to_dict()
+        if session['user_id']:
+            user = User.query.filter(User.id == session['user_id']).first()
+            if user:
+                return make_response(user.to_dict(rules=('-_password_hash',)), 200)
+            else:
+                return make_response({"errors": "User not found"}, 404)
         else:
-            return {'message': '401: Not Authorized'}, 401
+            return make_response('', 204)
 
-api.add_resource(CheckSession, '/check_session')
+api.add_resource(AutoLogin, '/auto_login')
+
+# class CheckSession(Resource):
+
+#     def get(self):
+#         user = User.query.filter(User.id == session.get('user_id')).first()
+#         if user:
+#             return user.to_dict()
+#         else:
+#             return {'message': '401: Not Authorized'}, 401
+
+# api.add_resource(CheckSession, '/check_session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
