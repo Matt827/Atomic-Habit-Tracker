@@ -17,7 +17,7 @@ class HabitEntry(db.Model, SerializerMixin):
     habit_id = db.Column(db.Integer, db.ForeignKey("habits.id"))
 
     # serilaize rules
-    serialize_rules = ("-user.habit_entries", )
+    serialize_rules = ("-user.habit_entries", "-habit.habit_entries", )
 
     # validation rules
 class Habit(db.Model, SerializerMixin):
@@ -34,7 +34,7 @@ class Habit(db.Model, SerializerMixin):
 
     # Relationship mapping the habit to related users
     users = db.relationship(
-        'User', secondary="habit_entries", back_populates='habits')
+        'User', secondary="habit_entries", backref='habit')
 
     # Relationship mapping the habit to related habit_entries
     habit_entries = db.relationship(
@@ -60,7 +60,7 @@ class User(db.Model, SerializerMixin):
 
     # Relationship mapping the user to related habits
     habits = db.relationship(
-        'Habit', secondary="habit_entries", back_populates='users')
+        'Habit', secondary="habit_entries", backref='user')
 
     # Relationship mapping the user to related habit_entries
     habit_entries = db.relationship(
