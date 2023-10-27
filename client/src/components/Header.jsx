@@ -11,13 +11,13 @@ function Header({ onLogout }) {
     return (
         <div className='header-container'>
             <h1>Header</h1>
-            <Link className="main-button" to="/">
+            <Link className="main" to="/">
                 Main
             </Link>
-            <Link className="login-button" to="/login">
+            <Link className="login" to="/login">
                 Login
             </Link>
-            <Link className="signup-button" to="/signup">
+            <Link className="signup" to="/signup">
                 Signup
             </Link>
             <button onClick={handleLogout}>Logout</button>
