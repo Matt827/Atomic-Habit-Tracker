@@ -6,11 +6,16 @@ function HabitList({habits}) {
         return <Habit
             key = {habit.id}
             name = {habit.name}
+            duration = {habit.duration}
+            daily = {habit.daily}
+            weekly = {habit.weekly}
+            monthly = {habit.monthly}
+            yearly = {habit.yearly}
+            users = {habit.users}
         />
     })
     return (
         <div className='login-container'>
-            <h1>HabitList</h1>
             {displayHabits}
         </div>
     )

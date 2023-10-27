@@ -5,10 +5,9 @@ import Header from './Header'
 const initialValue ={
 	username: '',
 	password: '',
-	age: ''
 }
 
-const Signup = ({userToDisplay}) => {
+const Signup = ({userToDisplay, onFormSwitch}) => {
 	const [signupForm, setSignupForm] = useState(initialValue)
 
     const navigate = useHistory()
@@ -35,32 +34,34 @@ const Signup = ({userToDisplay}) => {
 	}
 
   return (
-    <>
-    <Header />
-    <div className="singup-container">
-			<div>Signup</div>
-			<form className="signup-form" onSubmit={handleSignupSubmit}>
-				<input 
-					type="text" 
-					autoComplete='off' 
-					placeholder="Username" 
-					onChange={handleSignupChange} 
-					name='username' 
-					value ={signupForm.username}  />
-				<input 
-					type="text" 
-					autoComplete='off' 
-					placeholder="Password" 
-					onChange={handleSignupChange} 
-					name='password' 
-					value ={signupForm.password}  />
-                <input 
-                    className="signup-submit"
-                    type="submit" 
-                    value="submit"/>
-			</form>
+	<>
+    {/* <Header /> */}
+    <div className="auth-container">
+		<form className="signup-form" onSubmit={handleSignupSubmit}>
+			<label for="username">Username</label>
+			<input 
+				type="text" 
+				autoComplete='off' 
+				placeholder="Username" 
+				onChange={handleSignupChange} 
+				name='username' 
+				value ={signupForm.username}  />
+			<label for="password">Password</label>
+			<input 
+				type="password" 
+				autoComplete='off' 
+				placeholder="Password" 
+				onChange={handleSignupChange} 
+				name='password' 
+				value ={signupForm.password}  />
+			<input 
+				className="signup-submit"
+				type="submit" 
+				value="Sign up"/>
+		</form>
+		<button className="signup-button" onClick={() => onFormSwitch('login')}>Already have an account? Login here.</button>
     </div>
-    </>
+	</>
   )
 }
 
