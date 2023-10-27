@@ -34,7 +34,7 @@ const Signup = ({userToDisplay, onFormSwitch}) => {
 	}
 
   return (
-	<>
+	<div className='log-sign-container'>
     {/* <Header /> */}
     <div className="auth-container">
 		<form className="signup-form" onSubmit={handleSignupSubmit}>
@@ -61,7 +61,7 @@ const Signup = ({userToDisplay, onFormSwitch}) => {
 		</form>
 		<button className="signup-button" onClick={() => onFormSwitch('login')}>Already have an account? Login here.</button>
     </div>
-	</>
+	</div>
   )
 }
 

@@ -11,6 +11,11 @@ function App() {
   const [habits, setHabits] = useState([])
   const [entries, setEntries] = useState([])
   const [user, setUser] = useState(1)
+  const [currentForm, setCurrentForm] = useState("login")
+
+  const toggleForm = (formName) => {
+      setCurrentForm(formName)
+  }
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/habits")
@@ -68,12 +73,13 @@ function App() {
         </Route> 
         <Route exact path="/login">
           <Login
+            onFormSwitch={toggleForm}
             onLogin={handleLogin}
           />
         </Route>
         <Route exact path="/signup">
           <Signup
-          
+            onFormSwitch={toggleForm}
           />
           </Route>
       </Switch>

@@ -19,7 +19,7 @@ function Login({ onLogin, onFormSwitch }) {
     }
   
     return (
-		<>
+      <div className='log-sign-container'>
         {/* <Header /> */}
         <div className='auth-container'>
             <form className="login-form" onSubmit={handleSubmit}>
@@ -42,9 +42,9 @@ function Login({ onLogin, onFormSwitch }) {
                     type="submit" 
                     value="Login"/>
             </form>
-			<button className="login-button" onClick={() => onFormSwitch('signup')}>Don't have an account? Sign up here.</button>
+			  <button className="login-button" onClick={() => onFormSwitch('signup')}>Don't have an account? Sign up here.</button>
         </div>
-		</>
+		</div>
     );
   }
 
