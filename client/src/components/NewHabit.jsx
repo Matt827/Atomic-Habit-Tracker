@@ -3,11 +3,18 @@ import { Link } from "react-router-dom"
 import Habit from "./Habit"
 import Header from './Header';
 
-function NewHabit({habits, handleAddHabit}) {
+function NewHabit({habits, user_id, handleAddHabit}) {
     const displayHabits = habits.map(habit => {
         return <Habit
             key = {habit.id}
             name = {habit.name}
+            duration = {habit.duration}
+            daily = {habit.daily}
+            weekly = {habit.weekly}
+            monthly = {habit.monthly}
+            yearly = {habit.yearly}
+            users = {habit.users}
+            user_id = {user_id}
             handleAddHabit = {handleAddHabit}
         />
     })

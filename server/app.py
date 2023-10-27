@@ -78,7 +78,9 @@ class Users(Resource):
         try:
             user = User(
                 username = request.json["username"],
-                age = request.json["age"]
+                age = request.json["age"],
+                _password_hash = request.json["password_hash"],
+                image_url = request.json["image_url"]
             )
             db.session.add(user)
             db.session.commit()

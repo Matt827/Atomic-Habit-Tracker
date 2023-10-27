@@ -10,7 +10,7 @@ import CustomHabit from "./CustomHabit";
 function App() {
   const [habits, setHabits] = useState([])
   const [entries, setEntries] = useState([])
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(1)
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/habits")
@@ -24,25 +24,9 @@ function App() {
     .then(entries => setEntries(entries))
   }, [])
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5555/check_session")
-    .then((res) => {
-      if (res.ok) {
-        res.json().then((user) => setUser(user));
-      }
-    })
-  }, [])
-
-  // if (user) {
-  //   return <h2>Welcome, {user.username}!</h2>;
-  // } else {
-  //   return <Login onLogin={setUser} />;
-  // }
-
 
   function handleAddHabit(newhabit) {
-    console.log("Adding habit")
-      // setHabits([...habits, newhabit])
+    filteredHabits.push(newhabit)
   }
 
   function handleLogin() {
@@ -55,14 +39,16 @@ function App() {
     "pass"
   }
 
+  const filteredHabits = habits.filter(habit => habit.id == user)
+
   return (
     <div className="app">
     <Router>
       <Switch>
         <Route exact path="/">
           <Main 
-            // habits={habits}
-            entries={entries}
+            habits={filteredHabits}
+            user_id={user}
             onLogout={handleLogout}
             
           />
@@ -70,6 +56,7 @@ function App() {
         <Route exact path="/new_habit">
           <NewHabit 
             habits={habits}
+            user_id={user}
             handleAddHabit={handleAddHabit}
 
           />
